@@ -17,8 +17,8 @@ world.char_map = {
 world.switches = {
     {x = 4,  y = 3, options = {"NE_W", "E_W"}},
     {x = 5,  y = 2, options = {"NE_SW", "E_SW"}},
-    {x = 19, y = 2, options = {"NW_SE", "W_SE"}},
-    {x = 20, y = 3, options = {"NW_E", "W_E"}},
+    {x = 18, y = 2, options = {"NW_SE", "W_SE"}},
+    {x = 19, y = 3, options = {"NW_E", "W_E"}},
 }
 
 world.signals = {

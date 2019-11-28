@@ -33,6 +33,7 @@ station
 --]]
 
 local train = require 'train'
+local world = require 'world'
 
 local trains = { 
     train.new({
@@ -41,10 +42,13 @@ local trains = {
     })
 }
 
-local world = world.load("world_1.lua")
+local w = world.load("world_1.lua")
 
 function love.load()
+    love.graphics.setBackgroundColor(0.7,0.7,0.7)
+    love.graphics.setLineStyle("rough")
 end
 
 function love.draw()
+    w:draw()
 end

@@ -24,6 +24,7 @@ function world.new(options)
     local stations     = options.stations     or {}
     local char_map     = options.char_map     or {}
 
+    self.scale = 10
     self.tracks = {}
     self.world_cells = {}
     local y = 1
@@ -34,7 +35,10 @@ function world.new(options)
             if c == " " or c == "\n" then
                 -- ignore
             elseif char_map[c] then
-                local t = track.new({orientation=char_map[c]})
+                local t = track.new({
+                    position = {x, y},
+                    orientation = char_map[c],
+                })
                 self.world_cells[y][x] = t
                 table.insert(self.tracks, t)
             else
@@ -47,12 +51,12 @@ function world.new(options)
 
     self.switches = {}
     for _, s in pairs(switches) do
-        -- local t = self.world_cells[s.y][s.x]
-        -- local s = switch.new({
-            -- track = t,
-            -- options = s.options,
-        -- })
-        -- table.insert(self.switches, s)
+        local t = self.world_cells[s.y][s.x]
+        local s = switch.new({
+            track = t,
+            options = s.options,
+        })
+        table.insert(self.switches, s)
     end
 
     self.signals = {}
@@ -69,13 +73,21 @@ function world.new(options)
 end
 
 function world:draw()
+    love.graphics.push()
+    -- love.graphics.scale(10)
     for y, row in pairs(self.world_cells) do
         for x, track in pairs(row) do
             if track then
-                track:draw(x, y)
+                track:draw(self.scale)
             end     
         end
     end
+    local size = self.scale * track.SIZE
+    for _, s in pairs(self.switches) do
+        love.graphics.setColor(0, 0, 1, 0.5)
+        love.graphics.circle("line", s.track.position[1] * size, s.track.position[2] * size, size)
+    end
+    love.graphics.pop()
 end
 
 return world

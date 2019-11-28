@@ -1,4 +1,5 @@
 local track = require 'track'
+local switch = require 'switch'
 
 local world = {}
 world.__index = world
@@ -23,28 +24,35 @@ function world.new(options)
     local stations     = options.stations     or {}
     local char_map     = options.char_map     or {}
 
+    self.tracks = {}
     self.world_cells = {}
-    for y, line in ipairs(string_lines(self.world_string)) do
+    local y = 1
+    for line in string_lines(world_string) do
         self.world_cells[y] = {}
-        for x, c in ipairs(str:gmatch(".")) do
+        local x = 1
+        for c in line:gmatch(".") do
             if c == " " or c == "\n" then
                 -- ignore
             elseif char_map[c] then
-                self.world_cells[y][x] = track.new({orientation=char_map[c]})
+                local t = track.new({orientation=char_map[c]})
+                self.world_cells[y][x] = t
+                table.insert(self.tracks, t)
             else
                 print("Unrecognised character '" .. c .. '".')
             end
+            x = x + 1
         end
+        y = y + 1
     end
 
     self.switches = {}
     for _, s in pairs(switches) do
-        local t = self.world_cells[s.y][s.x]
-        local s = switch.new({
-            track = t,
-            options = s.options,
-        })
-        table.insert(self.switches, s)
+        -- local t = self.world_cells[s.y][s.x]
+        -- local s = switch.new({
+            -- track = t,
+            -- options = s.options,
+        -- })
+        -- table.insert(self.switches, s)
     end
 
     self.signals = {}
@@ -57,7 +65,17 @@ function world.new(options)
         -- TODO: add stations
     end
 
-    return world
+    return self
+end
+
+function world:draw()
+    for y, row in pairs(self.world_cells) do
+        for x, track in pairs(row) do
+            if track then
+                track:draw(x, y)
+            end     
+        end
+    end
 end
 
 return world

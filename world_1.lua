@@ -1,27 +1,31 @@
-local world_string = [[
-      ____________
-    ⋌_____________⋋
-___⋌_______________⋋___
+local world = {}
+
+world.world_string = [[
+     /__________\
+    /____________\
+___<______________>___
 ]]
 
-local char_map = {
+world.char_map = {
     ["_"] = "E_W",
-    ["⋌"] = "NE_W",
-    ["⋋"] = "NW_E",
+    ["<"] = "NE_W",
+    [">"] = "NW_E",
+    ["/"] = "E_SW",
+    ["\\"] = "W_SE",
 }
 
-local switches = {
+world.switches = {
     {x = 4,  y = 3, options = {"NE_W", "E_W"}},
     {x = 5,  y = 2, options = {"NE_SW", "E_SW"}},
     {x = 19, y = 2, options = {"NW_SE", "W_SE"}},
     {x = 20, y = 3, options = {"NW_E", "W_E"}},
 }
 
-local signals = {
+world.signals = {
 
 }
 
-local stations = {
+world.stations = {
     {
         name = "Leeds", 
         platforms = {
@@ -32,3 +36,5 @@ local stations = {
         }
     }
 }
+
+return world

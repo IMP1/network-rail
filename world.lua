@@ -1,5 +1,7 @@
 local track = require 'track'
 local switch = require 'switch'
+local signal = require 'signal'
+local station = require 'station'
 
 local world = {}
 world.__index = world
@@ -52,21 +54,29 @@ function world.new(options)
     self.switches = {}
     for _, s in pairs(switches) do
         local t = self.world_cells[s.y][s.x]
-        local s = switch.new({
+        local obj = switch.new({
             track = t,
             options = s.options,
         })
-        table.insert(self.switches, s)
+        table.insert(self.switches, obj)
     end
 
     self.signals = {}
     for _, s in pairs(signals) do
-        -- TODO: add signals
+        local t = self.world_cells[s.y][s.x]
+        local obj = signal.new({
+            track = t,
+            options = s.options,
+        })
+        table.insert(self.signals, obj)
     end
 
     self.stations = {}
     for _, s in pairs(stations) do
-        -- TODO: add stations
+        local obj = station.new({
+            options = s,
+        })
+        table.insert(self.stations, obj)
     end
 
     return self
@@ -78,7 +88,6 @@ end
 
 function world:draw()
     love.graphics.push()
-    -- love.graphics.scale(10)
     for y, row in pairs(self.world_cells) do
         for x, track in pairs(row) do
             if track then

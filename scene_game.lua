@@ -1,12 +1,13 @@
 local train = require 'train'
 local world = require 'world'
+local clock = require 'clock'
 
-local scene_base = require 'scn.base'
+local scene_base = require 'scene_base'
 local scene = {}
 setmetatable(scene, scene_base)
 scene.__index = scene
 
-local MOUSE_CLICK_THRESHOLD = 16
+local MOUSE_CLICK_THRESHOLD = 64
 
 function table.index(tbl, obj)
     for i, o in ipairs(tbl) do
@@ -21,7 +22,7 @@ function scene.new()
 
     self.world = world.load("world_1.lua")
     self.trains = {
-        trains.new({
+        train.new({
             position = {20, 20},
             direction = 0,
             carriages = 3,
@@ -34,7 +35,9 @@ function scene.new()
 
     local world_width = 1000 -- TODO: set actual world width
     table.sort(self.all_selectable_objects, function(a, b)
-        a.x + a.y * world_width < b.x + b.y * world_width
+        local ax, ay = unpack(a.position)
+        local bx, by = unpack(b.position)
+        return ax + ay * world_width < bx + by * world_width
     end)
 
     for _, t in pairs(self.trains) do
@@ -43,22 +46,24 @@ function scene.new()
 
     self.game_speed = 1
     self.paused = false
+    self.clock = clock.new({})
     self.control_groups = {}
+    self.schedules = {}
 
     return self
 end
 
 function scene:objectNearestPoint(x, y, threshold)
-    local nearest = nil
-    local distance = nil
+    local nearest_object = nil
+    local nearest_distance = nil
     for _, obj in pairs(self.all_selectable_objects) do
-        local dist = (x - nearest.x)^2 +(y - nearest.y)^2
-        if dist <= threshold and (nearest == nil or dist < distance) then
-            nearest = obj
-            distance = dist
+        local dist = (x - obj.position[1])^2 +(y - obj.position[2])^2
+        if dist <= threshold and (nearest_object == nil or dist < nearest_distance) then
+            nearest_object = obj
+            nearest_distance = dist
         end
     end
-    return nearest
+    return nearest_object
 end
 
 function scene:getNextTabObject()
@@ -81,8 +86,11 @@ end
 
 
 function scene:mouseReleased(mx, my, key)
-    local wx, wy = mx, my
+    print("mouse pressed at", mx, my)
+    local wx, wy = self.world:toWorldCoords(mx, my)
+    print("world position", wx, wy)
     local obj = self:objectNearestPoint(wx, wy, MOUSE_CLICK_THRESHOLD)
+    print("nearest obj", obj)
     if obj then
         self.selection = obj
         self.selection_index = table.index(self.all_selectable_objects, self.selection)
@@ -105,6 +113,9 @@ function scene:keyPressed(key)
         end
     end
     if key == "space" and self.selection then
+        if self.selection.toggle then
+            self.selection:toggle()
+        end
         -- TODO: if space, then activate/toggle selected object
     end
     if key == "escape" and self.selection then
@@ -127,6 +138,7 @@ end
 
 function scene:draw()
     self.world:draw()
+    love.graphics.print(tostring(self.clock), 0, 0)
 end
 
 return scene

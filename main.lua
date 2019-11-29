@@ -11,11 +11,11 @@ function love.load()
 end
 
 function love.mousereleased(mx, my, key)
-    scene_manager.mouseReleased(mx, my, key)
+    scene_manager.mousereleased(mx, my, key)
 end
 
 function love.keypressed(key)
-    scene_manager.keyPressed(key)
+    scene_manager.keypressed(key)
 end
 
 function love.update(dt)

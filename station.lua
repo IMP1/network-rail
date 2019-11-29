@@ -6,6 +6,7 @@ function station.new(options)
     setmetatable(self, station)
 
     self.name      = options.name
+    self.position  = options.position
     self.platforms = options.platforms
 
     return self

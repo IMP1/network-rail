@@ -5,9 +5,11 @@ function signal.new(options)
     local self = {}
     setmetatable(self, signal)
 
-    self.direction     = options.direction
+    self.direction     = options.direction 
+    self.track         = options.track       or error("no position supplied")
     self.allow_passage = options.start_green
 
+    self.position = self.track.position
     self.waiting_trains = {}
 
     -- makes trains wait

@@ -23,6 +23,7 @@ function scene.new()
     self.trains = {
         trains.new({
             position = {20, 20},
+            direction = 0,
             carriages = 3,
         })
     }
@@ -39,6 +40,10 @@ function scene.new()
     for _, t in pairs(self.trains) do
         table.insert(self.all_selectable_objects, t)
     end
+
+    self.game_speed = 1
+    self.paused = false
+    self.control_groups = {}
 
     return self
 end
@@ -92,10 +97,12 @@ function scene:keyPressed(key)
             self.selection, self.selection_index = self:getNextTabObject(self.selection_index)
         end
     end
-    if key == "??" and love.keyboard.isDown("lctrl", "rctrl") then
-        -- TODO: if ctrl + key, then assign control key for that self.selection
-    elseif key == "??" then
-        -- TODO: if key, then select that control group
+    if key == "??" then
+        if love.keyboard.isDown("lctrl", "rctrl") and self.selection then
+            -- TODO: if key, then assign that control group
+        else
+            -- TODO: if key, then select that control group
+        end
     end
     if key == "space" and self.selection then
         -- TODO: if space, then activate/toggle selected object
@@ -107,12 +114,14 @@ function scene:keyPressed(key)
 end
 
 function scene:update(dt)
-    self.clock:update(dt)
+    if self.paused then return end
+    local gdt = dt * self.game_speed
+    self.clock:update(gdt)
     for _, t in pairs(self.trains) do
-        t:update(dt)
+        t:update(gdt)
     end
     for _, s in pairs(self.schedules) do
-        s:update(dt)
+        s:update(gdt)
     end
 end
 

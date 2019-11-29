@@ -26,7 +26,7 @@ function world.new(options)
     local stations     = options.stations     or {}
     local char_map     = options.char_map     or {}
 
-    self.scale = 10
+    self.scale = 1
     self.tracks = {}
     self.world_cells = {}
     local y = 1
@@ -95,7 +95,7 @@ function world:allSelectableObjects()
     return { unpack(self.switches), unpack(self.signals), unpack(self.stations) }
 end
 
-function world:draw()
+function world:draw(selected_object)
     love.graphics.push()
     for y, row in pairs(self.world_cells) do
         for x, track in pairs(row) do
@@ -104,10 +104,15 @@ function world:draw()
             end     
         end
     end
-    local size = self.scale * track.SIZE
-    for _, s in pairs(self.switches) do
-        love.graphics.setColor(0, 0, 1, 0.5)
-        love.graphics.circle("line", s.track.position[1] * size, s.track.position[2] * size, size)
+    local size = self.scale
+    local all_objects = self:allSelectableObjects()
+    for _, obj in pairs(all_objects) do
+        if obj == selected_object then
+            love.graphics.setColor(1, 1, 0, 1)
+        else
+            love.graphics.setColor(0, 0, 1, 0.5)
+        end
+        love.graphics.circle("line", obj.position[1] * size, obj.position[2] * size, size)
     end
     love.graphics.pop()
 end

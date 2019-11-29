@@ -3,7 +3,6 @@ local track_directions = require 'track_directions'
 
 local track = {}
 track.__index = track
-track.SIZE = 2
 
 function track.new(options)
     local self = {}
@@ -21,7 +20,7 @@ end
 
 function track:draw(scale, colour)
     local x, y = unpack(self.position)
-    local size = track.SIZE * (scale or 1)
+    local size = scale or 1
     local points = {}
     for _, v in pairs(track_directions[self.orientation]) do
         local x, y = direction.to_offset(v)

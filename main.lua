@@ -10,14 +10,6 @@ function love.load()
     scene_manager.setScene(INITIAL_SCENE.new())
 end
 
-function love.mousereleased(mx, my, key)
-    scene_manager.mousereleased(mx, my, key)
-end
-
-function love.keypressed(key)
-    scene_manager.keypressed(key)
-end
-
 function love.update(dt)
     scene_manager.update(dt)
 end

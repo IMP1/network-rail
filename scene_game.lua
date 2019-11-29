@@ -1,6 +1,7 @@
-local train = require 'train'
-local world = require 'world'
-local clock = require 'clock'
+local train  = require 'train'
+local world  = require 'world'
+local clock  = require 'clock'
+local camera = require 'camera'
 
 local scene_base = require 'scene_base'
 local scene = {}
@@ -49,6 +50,8 @@ function scene.new()
     self.clock = clock.new({})
     self.control_groups = {}
     self.schedules = {}
+    self.camera = camera.new()
+    self.camera:scale(10)
 
     return self
 end
@@ -86,12 +89,13 @@ end
 
 
 function scene:mouseReleased(mx, my, key)
-    print("mouse pressed at", mx, my)
+    print("mouse click at", mx, my)
     local wx, wy = self.world:toWorldCoords(mx, my)
-    print("world position", wx, wy)
+    print("at", wx, wy)
     local obj = self:objectNearestPoint(wx, wy, MOUSE_CLICK_THRESHOLD)
-    print("nearest obj", obj)
     if obj then
+        print("selected object =", obj)
+        print("at", obj.position[1], obj.position[2])
         self.selection = obj
         self.selection_index = table.index(self.all_selectable_objects, self.selection)
     end
@@ -116,7 +120,6 @@ function scene:keyPressed(key)
         if self.selection.toggle then
             self.selection:toggle()
         end
-        -- TODO: if space, then activate/toggle selected object
     end
     if key == "escape" and self.selection then
         self.selection = nil
@@ -137,7 +140,12 @@ function scene:update(dt)
 end
 
 function scene:draw()
-    self.world:draw()
+    self.camera:set()
+    self.world:draw(self.selection)
+    local mx, my = love.mouse.getPosition()
+    local x, y = self.world:toWorldCoords(mx, my)
+    love.graphics.circle("fill", x, y, 4)
+    self.camera:unset()
     love.graphics.print(tostring(self.clock), 0, 0)
 end
 

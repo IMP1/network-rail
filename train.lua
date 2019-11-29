@@ -19,6 +19,9 @@ function train.new(options)
     self.engine_length   = options.engine_length   or 20 -- metres
     self.engine_width    = options.engine_width    or 3  -- metres
     self.engine_shape    = options.engine_shape    or carriage.shapes.BULLET
+    self.top_speed       = options.top_speed       or 50 -- metres / second
+    self.acceleration    = options.acceleration    or 0.4 -- metres / second / second
+    self.deceleration    = options.deceleration    or 0.4 -- metres / second / second
 
     self.sections = {}
     table.insert(self.sections, carriage.new({
@@ -38,8 +41,14 @@ function train.new(options)
         }))
     end
     self.head = self.sections[1]
+    self.waiting = false
+    self.moving = false
 
     return self
+end
+
+function train:notify()
+    -- signal this train was waiting on has turned green
 end
 
 function train:update(dt)

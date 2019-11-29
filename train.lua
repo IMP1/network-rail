@@ -11,7 +11,7 @@ function train.new(options)
     local carriage_count = options.carriages or 2
 
     self.route           = options.route           or route.new()
-    self.position        = options.position        or {0, 0}
+    self.position        = options.position        or {0, 0} -- metres
     self.direction       = options.direction       or 0  -- radians
     self.carriage_length = options.carriage_length or 20 -- metres
     self.carriage_width  = options.carriage_width  or 3  -- metres
@@ -49,6 +49,8 @@ end
 
 function train:notify()
     -- signal this train was waiting on has turned green
+    -- TODO: check signal, and attempt to move
+
 end
 
 function train:update(dt)

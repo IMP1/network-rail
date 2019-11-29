@@ -74,12 +74,21 @@ function world.new(options)
     self.stations = {}
     for _, s in pairs(stations) do
         local obj = station.new({
+            position = {0, 0},
             options = s,
         })
         table.insert(self.stations, obj)
     end
 
     return self
+end
+
+function world:toWorldCoords(mx, my)
+    return mx / self.scale, my / self.scale
+end
+
+function world:toScreenCoords(wx, wy)
+    return wx * self.scale, wy * self.scale
 end
 
 function world:allSelectableObjects()

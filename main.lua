@@ -35,9 +35,9 @@ station
 local train = require 'train'
 local world = require 'world'
 
-MOUSE_CLICK_THRESHOLD = 16
+local MOUSE_CLICK_THRESHOLD = 16
 
-local trains = { 
+local trains = {
     train.new({
         position = {20, 20},
         carriages = 3,
@@ -47,6 +47,48 @@ local trains = {
 local w = world.load("world_1.lua")
 local selection = nil
 local selection_index = nil
+local all_selectable_objects = w:allSelectableObjects()
+
+local world_width = 1000 -- TODO: set actual world width
+table.sort(all_selectable_objects, function(a, b)
+    a.x + a.y * world_width < b.x + b.y * world_width
+end)
+
+for _, t in pairs(trains) do
+    table.insert(all_selectable_objects, t)
+end
+
+
+local function objectNearestPoint(x, y, threshold)
+    local nearest = nil
+    local distance = nil
+    for _, obj in pairs(all_selectable_objects) do
+        local dist = (x - nearest.x)^2 +(y - nearest.y)^2
+        if dist <= threshold and (nearest == nil or dist < distance) then
+            nearest = obj
+            distance = dist
+        end
+    end
+    return nearest
+end
+
+local function getNextTabObject()
+    local next_object_index = (selection_index or 0) + 1
+    if next_object_index > #all_selectable_objects then
+        next_object_index = 1
+    end
+    selection = all_selectable_objects[next_object_index]
+    selection_index = next_object_index
+end
+
+local function getPreviousTabObject()
+    local next_object_index = (selection_index or 0) - 1
+    if next_object_index < 1 then
+        next_object_index = #all_selectable_objects
+    end
+    selection = all_selectable_objects[next_object_index]
+    selection_index = next_object_index
+end
 
 function love.load()
     love.graphics.setBackgroundColor(0.7,0.7,0.7)
@@ -63,18 +105,25 @@ function love.mousereleased(mx, my, key)
 end
 
 function love.keypressed(key)
-    -- TODO: if tab then cycle through selectable static objects in world
     if key == "tab" then
-        selection, selection_index = w:getNextTabObject(selection_index)
+        if love.keyboard.isDown("lshift", "rshift") then
+            selection, selection_index = w:getPreviousTabObject(selection_index)
+        else
+            selection, selection_index = w:getNextTabObject(selection_index)
+        end
     end
-    -- TODO: if <??> then cycle through selectable moveable objects (trains) in world
     if key == "??" and love.keyboard.isDown("lctrl", "rctrl") then
         -- TODO: if ctrl + key, then assign control key for that selection
-    elseif key == "" then
+    elseif key == "??" then
         -- TODO: if key, then select that control group
     end
-
-    -- TODO: if space, then activate/toggle selected object
+    if key == "space" and selection then
+        -- TODO: if space, then activate/toggle selected object
+    end
+    if key == "escape" and selection then
+        selection = nil
+        selection_index = nil
+    end
 end
 
 function love.update(dt)

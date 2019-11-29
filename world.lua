@@ -69,7 +69,43 @@ function world.new(options)
         -- TODO: add stations
     end
 
+    self.all_objects = { unpack(self.switches), unpack(self.signals), unpack(self.stations) }
+    local world_width = 1000 -- TODO: set actual world width
+    table.sort(self.all_objects, function(a, b)
+        a.x + a.y * world_width < b.x + b.y * world_width
+    end)
+
     return self
+end
+
+function world:getNextTabObject(current_object_index)
+    local next_object_index = (current_object_index or 0) + 1
+    if next_object_index > #self.all_objects then
+        next_object_index = 1
+    end
+    return self.all_objects[next_object_index], next_object_index
+end
+
+function world:getTabObjectIndex(object)
+    for i, obj in ipairs(self.all_objects) do
+        if obj == object then
+            return i
+        end
+    end
+    return nil
+end
+
+function world:objectNearestPoint(x, y, threshold)
+    local nearest = nil
+    local distance = nil
+    for _, obj in pairs(self.all_objects) do
+        local dist = (x - nearest.x)^2 +(y - nearest.y)^2
+        if dist <= threshold and (nearest == nil or dist < distance) then
+            nearest = obj
+            distance = dist
+        end
+    end
+    return nearest
 end
 
 function world:draw()

@@ -5,7 +5,8 @@ function station.new(options)
     local self = {}
     setmetatable(self, station)
 
-
+    self.name      = options.name
+    self.platforms = options.platforms
 
     return self
 end

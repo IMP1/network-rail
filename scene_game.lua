@@ -142,9 +142,6 @@ end
 function scene:draw()
     self.camera:set()
     self.world:draw(self.selection)
-    local mx, my = love.mouse.getPosition()
-    local x, y = self.world:toWorldCoords(mx, my)
-    love.graphics.circle("fill", x, y, 4)
     self.camera:unset()
     love.graphics.print(tostring(self.clock), 0, 0)
 end

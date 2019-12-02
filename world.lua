@@ -6,6 +6,8 @@ local station = require 'station'
 local world = {}
 world.__index = world
 
+world.TILE_SIZE = 24
+
 local function string_lines(s)
     if s:sub(-1)~="\n" then s=s.."\n" end
     return s:gmatch("(.-)\n")
@@ -26,7 +28,6 @@ function world.new(options)
     local stations     = options.stations     or {}
     local char_map     = options.char_map     or {}
 
-    self.scale = 1
     self.tracks = {}
     self.world_cells = {}
     local y = 1
@@ -83,14 +84,6 @@ function world.new(options)
     return self
 end
 
-function world:toWorldCoords(mx, my)
-    return mx / self.scale, my / self.scale
-end
-
-function world:toScreenCoords(wx, wy)
-    return wx * self.scale, wy * self.scale
-end
-
 function world:allSelectableObjects()
     return { unpack(self.switches), unpack(self.signals), unpack(self.stations) }
 end
@@ -100,11 +93,10 @@ function world:draw(selected_object)
     for y, row in pairs(self.world_cells) do
         for x, track in pairs(row) do
             if track then
-                track:draw(self.scale)
+                track:draw(world.TILE_SIZE)
             end     
         end
     end
-    local size = self.scale
     local all_objects = self:allSelectableObjects()
     for _, obj in pairs(all_objects) do
         if obj == selected_object then
@@ -112,7 +104,7 @@ function world:draw(selected_object)
         else
             love.graphics.setColor(0, 0, 1, 0.5)
         end
-        love.graphics.circle("line", obj.position[1] * size, obj.position[2] * size, size)
+        love.graphics.circle("line", obj.position[1] * world.TILE_SIZE, obj.position[2] * world.TILE_SIZE, world.TILE_SIZE)
     end
     love.graphics.pop()
 end

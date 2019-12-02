@@ -62,7 +62,6 @@ end
 -- Methods to pass along to relevant scene(s) --
 ------------------------------------------------
 function SceneManager.keypressed(key, is_repeat)
-    print("scene manager keypressed begin")
     if current_scene and current_scene.keyPressed then 
         current_scene:keyPressed(key, is_repeat)
     end
@@ -71,7 +70,6 @@ function SceneManager.keypressed(key, is_repeat)
             scene:backgroundKeyPressed(key, is_repeat)
         end
     end
-    print("scene manager keypressed end")
 end
 
 function SceneManager.textinput(text)

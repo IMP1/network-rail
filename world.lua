@@ -59,6 +59,7 @@ function world.new(options)
             track = t,
             options = s.options,
         })
+        t.orientation = obj.options[obj.current]
         table.insert(self.switches, obj)
     end
 
@@ -76,10 +77,6 @@ function world.new(options)
         local obj = station.new(s)
         table.insert(self.stations, obj)
     end
-
-    print(#self.switches, "switches")
-    print(#self.signals, "signals")
-    print(#self.stations, "stations")
 
     return self
 end

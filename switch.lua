@@ -14,7 +14,6 @@ function switch.new(options)
 end
 
 function switch:toggle()
-    print("switch toggle")
     self.current = self.current + 1
     if self.current > #self.options then
         self.current = 1

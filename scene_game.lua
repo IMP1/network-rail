@@ -8,7 +8,8 @@ local scene = {}
 setmetatable(scene, scene_base)
 scene.__index = scene
 
-local MOUSE_CLICK_THRESHOLD = 2
+local MOUSE_CLICK_THRESHOLD = 2 -- tiles
+local CAMERA_SPEED = 320 -- pixels per second
 
 function table.index(tbl, obj)
     for i, o in ipairs(tbl) do
@@ -51,7 +52,7 @@ function scene.new()
     self.control_groups = {}
     self.schedules = {}
     self.camera = camera.new()
-    
+
     return self
 end
 
@@ -59,7 +60,7 @@ function scene:objectNearestPoint(x, y, threshold)
     local nearest_object = nil
     local nearest_distance = nil
     for _, obj in pairs(self.all_selectable_objects) do
-        local dist = (x - obj.position[1])^2 +(y - obj.position[2])^2
+        local dist = (x - obj.position[1])^2 + (y - obj.position[2])^2
         if dist <= threshold and (nearest_object == nil or dist < nearest_distance) then
             nearest_object = obj
             nearest_distance = dist
@@ -88,15 +89,11 @@ end
 
 
 function scene:mouseReleased(mx, my, key)
-    print("mouse click at", mx, my)
     local wx, wy = self.camera:toWorldPosition(mx, my)
-    wx = math.ceil(wx / self.world.TILE_SIZE)
-    wy = math.ceil(wy / self.world.TILE_SIZE)
-    print("at", wx, wy)
+    wx = wx / self.world.TILE_SIZE
+    wy = wy / self.world.TILE_SIZE
     local obj = self:objectNearestPoint(wx, wy, MOUSE_CLICK_THRESHOLD)
     if obj then
-        print("selected object =", obj)
-        print("at", obj.position[1], obj.position[2])
         self.selection = obj
         self.selection_index = table.index(self.all_selectable_objects, self.selection)
     end
@@ -138,6 +135,22 @@ function scene:update(dt)
     for _, s in pairs(self.schedules) do
         s:update(gdt)
     end
+
+    -- camera movement
+    local dx, dy = 0, 0
+    if love.keyboard.isDown("w") then
+        dy = dy - dt * CAMERA_SPEED
+    end
+    if love.keyboard.isDown("a") then
+        dx = dx - dt * CAMERA_SPEED
+    end
+    if love.keyboard.isDown("s") then
+        dy = dy + dt * CAMERA_SPEED
+    end
+    if love.keyboard.isDown("d") then
+        dx = dx + dt * CAMERA_SPEED
+    end
+    self.camera:move(dx, dy)
 end
 
 function scene:draw()

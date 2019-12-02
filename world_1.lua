@@ -29,7 +29,7 @@ world.signals = {
 
 world.stations = {
     {
-        name = "Leeds", 
+        name = "Leeds",
         platforms = {
             { 
                 name = "1", 

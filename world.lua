@@ -67,7 +67,6 @@ function world.new(options)
         local t = self.world_cells[s.y][s.x]
         local obj = signal.new({
             track = t,
-            options = s.options,
         })
         table.insert(self.signals, obj)
     end
@@ -78,11 +77,25 @@ function world.new(options)
         table.insert(self.stations, obj)
     end
 
+    print(#self.switches, "switches")
+    print(#self.signals, "signals")
+    print(#self.stations, "stations")
+
     return self
 end
 
 function world:allSelectableObjects()
-    return { unpack(self.switches), unpack(self.signals), unpack(self.stations) }
+    local objects = {}
+    for _, switch in pairs(self.switches) do
+        table.insert(objects, switch)
+    end
+    for _, signal in pairs(self.signals) do
+        table.insert(objects, signal)
+    end
+    for _, station in pairs(self.stations) do
+        table.insert(objects, station)
+    end
+    return objects
 end
 
 function world:draw(selected_object)

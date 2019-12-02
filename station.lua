@@ -6,8 +6,21 @@ function station.new(options)
     setmetatable(self, station)
 
     self.name      = options.name
-    self.position  = options.position
-    self.platforms = options.platforms
+    self.platforms = options.platforms or {}
+
+    self.position = { nil, nil }
+    for _, platform in pairs(self.platforms) do
+        local x = 0
+        local y = 0
+        for _, cell in pairs(platform.tracks) do
+            x = x + cell[1]
+            y = math.min(y, cell[2])
+        end
+        x = x / #platform.tracks
+        if self.position[2] == nil or y < self.position[2] then
+            self.position = { x, y }
+        end
+    end
 
     return self
 end

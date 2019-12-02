@@ -29,9 +29,9 @@ end
 
 function clock:__tostring(format)
     local str = format or "%H:%M:%S"
-    str = str:gsub("%%S", tostring(math.floor(self.seconds)))
-    str = str:gsub("%%M", tostring(math.floor(self.minutes)))
-    str = str:gsub("%%H", tostring(math.floor(self.hours)))
+    str = str:gsub("%%S", string.format("%02d", math.floor(self.seconds)))
+    str = str:gsub("%%M", string.format("%02d", math.floor(self.minutes)))
+    str = str:gsub("%%H", string.format("%02d", math.floor(self.hours)))
     return str
                  
                  

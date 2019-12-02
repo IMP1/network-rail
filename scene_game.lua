@@ -8,7 +8,7 @@ local scene = {}
 setmetatable(scene, scene_base)
 scene.__index = scene
 
-local MOUSE_CLICK_THRESHOLD = 64
+local MOUSE_CLICK_THRESHOLD = 2
 
 function table.index(tbl, obj)
     for i, o in ipairs(tbl) do
@@ -90,7 +90,9 @@ end
 
 function scene:mouseReleased(mx, my, key)
     print("mouse click at", mx, my)
-    local wx, wy = self.world:toWorldCoords(mx, my)
+    local wx, wy = self.camera:toWorldPosition(mx, my)
+    wx = math.ceil(wx / self.world.TILE_SIZE)
+    wy = math.ceil(wy / self.world.TILE_SIZE)
     print("at", wx, wy)
     local obj = self:objectNearestPoint(wx, wy, MOUSE_CLICK_THRESHOLD)
     if obj then

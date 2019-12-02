@@ -51,8 +51,7 @@ function scene.new()
     self.control_groups = {}
     self.schedules = {}
     self.camera = camera.new()
-    self.camera:scale(10)
-
+    
     return self
 end
 

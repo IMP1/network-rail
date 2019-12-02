@@ -102,9 +102,9 @@ end
 function scene:keyPressed(key)
     if key == "tab" then
         if love.keyboard.isDown("lshift", "rshift") then
-            self.selection, self.selection_index = self:getPreviousTabObject(self.selection_index)
+            self:getPreviousTabObject(self.selection_index)
         else
-            self.selection, self.selection_index = self:getNextTabObject(self.selection_index)
+            self:getNextTabObject(self.selection_index)
         end
     end
     if key == "??" then

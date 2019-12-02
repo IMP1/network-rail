@@ -74,10 +74,7 @@ function world.new(options)
 
     self.stations = {}
     for _, s in pairs(stations) do
-        local obj = station.new({
-            position = {0, 0},
-            options = s,
-        })
+        local obj = station.new(s)
         table.insert(self.stations, obj)
     end
 

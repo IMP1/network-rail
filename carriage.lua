@@ -12,10 +12,10 @@ function carriage.new(options)
     setmetatable(self, carriage)
 
     self.colour    = options.colour    or {0.1, 0.1, 0.1}
-    self.position  = options.position  or {0, 0}
+    self.position  = options.position  or {0, 0} -- pixels
     self.direction = options.direction or 0  -- radians
-    self.length    = options.length    or 20 -- metres
-    self.width     = options.width     or 3  -- metres
+    self.length    = options.length    or 20 -- pixels
+    self.width     = options.width     or 3  -- pixels
     self.shape     = options.shape     or carriage.shapes.SQUARE
 
     return self

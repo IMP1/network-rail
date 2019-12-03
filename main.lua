@@ -7,7 +7,8 @@ function love.load()
     love.graphics.setBackgroundColor(0.7,0.7,0.7)
     love.graphics.setLineStyle("rough")
     scene_manager.hook()
-    scene_manager.setScene(INITIAL_SCENE.new())
+    local level_data = love.filesystem.load("level_1.lua")()
+    scene_manager.setScene(INITIAL_SCENE.new(level_data))
 end
 
 function love.update(dt)

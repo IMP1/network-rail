@@ -18,18 +18,21 @@ function table.index(tbl, obj)
     return nil
 end
 
-function scene.new()
+function scene.new(level)
     local self = {}
     setmetatable(self, scene)
 
-    self.world = world.load("world_1.lua")
-    self.trains = {
-        train.new({
-            position = {20, 20},
-            direction = 0,
-            carriages = 3,
-        })
-    }
+    self.world = world.load(level.world)
+    
+    self.trains = {}
+    for _, t in pairs(level.trains) do
+        table.insert(self.trains, train.new(t))
+    end
+
+    self.triggers = {}
+    for _, t in pairs(level.triggers) do
+        table.insert(self.triggers, t)
+    end
 
     self.selection = nil
     self.selection_index = nil

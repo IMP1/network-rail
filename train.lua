@@ -57,9 +57,10 @@ function train:update(dt)
 
 end
 
-function train:draw()
+function train:draw(tile_size)
+    love.graphics.setColor(0, 0, 0)
     for _, section in pairs(self.sections) do
-        section:draw()
+        section:draw(tile_size)
     end
 end
 

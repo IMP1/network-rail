@@ -25,10 +25,11 @@ function carriage:move(distance, direction, world)
     
 end
 
-function carriage:draw()
+function carriage:draw(tile_size)
     local x, y = unpack(self.position)
     local w, h = self.length, self.width
     local r = self.direction
+    love.graphics.circle("fill", x * tile_size, y * tile_size, 3)
 end
 
 return carriage

@@ -160,6 +160,9 @@ function scene:draw()
     love.graphics.setColor(1, 1, 1)
     self.camera:set()
     self.world:draw(self.selection)
+    for _, train in pairs(self.trains) do
+        train:draw(world.TILE_SIZE)
+    end
     self.camera:unset()
     love.graphics.setColor(0, 0, 0)
     love.graphics.print(tostring(self.clock), 0, 0)

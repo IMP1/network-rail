@@ -25,4 +25,9 @@ function station.new(options)
     return self
 end
 
+function station:drawInfo()
+    love.graphics.setColor(0, 0, 0)
+    love.graphics.print("Station: " .. self.name, 0, 0)
+end
+
 return station

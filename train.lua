@@ -63,4 +63,9 @@ function train:draw()
     end
 end
 
+function train:drawInfo()
+    love.graphics.setColor(0, 0, 0)
+    love.graphics.print("Train", 0, 0)
+end
+
 return train

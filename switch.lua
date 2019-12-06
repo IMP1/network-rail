@@ -22,4 +22,11 @@ function switch:toggle()
     self.track.orientation = self.options[self.current]
 end
 
+function switch:drawInfo()
+    love.graphics.setColor(0, 0, 0)
+    love.graphics.print("Switch", 0, 0)
+    local state = "State " .. self.current .. " of " .. #self.options
+    love.graphics.print(state, 0, 16)
+end
+
 return switch

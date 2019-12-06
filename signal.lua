@@ -32,4 +32,12 @@ function signal:toggle()
     end
 end
 
+function signal:drawInfo()
+    love.graphics.setColor(0, 0, 0)
+    love.graphics.print("Signal", 0, 0)
+    local state = "red"
+    if self.allow_passage then state = "green" end
+    love.graphics.print("Current state is " .. state, 0, 16)
+end
+
 return signal

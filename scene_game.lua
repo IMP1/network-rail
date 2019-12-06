@@ -157,10 +157,18 @@ function scene:update(dt)
 end
 
 function scene:draw()
+    love.graphics.setColor(1, 1, 1)
     self.camera:set()
     self.world:draw(self.selection)
     self.camera:unset()
+    love.graphics.setColor(0, 0, 0)
     love.graphics.print(tostring(self.clock), 0, 0)
+    if self.selection and self.selection.drawInfo then
+        love.graphics.push()
+        love.graphics.translate(0, 64)
+        self.selection:drawInfo()
+        love.graphics.pop()
+    end
 end
 
 return scene

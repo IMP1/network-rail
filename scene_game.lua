@@ -26,7 +26,7 @@ function scene.new(level)
     
     self.trains = {}
     for _, t in pairs(level.trains) do
-        table.insert(self.trains, train.new(t))
+        table.insert(self.trains, train.new(t, self.world))
     end
 
     self.triggers = {}

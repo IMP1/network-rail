@@ -81,6 +81,10 @@ function world.new(options)
     return self
 end
 
+function world:trackAt(x, y)
+    return self.world_cells[y][x]
+end
+
 function world:allSelectableObjects()
     local objects = {}
     for _, switch in pairs(self.switches) do

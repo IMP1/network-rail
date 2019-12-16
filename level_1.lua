@@ -8,7 +8,7 @@ level.triggers = {
 
 level.trains = {
     {
-        position = {2, 3},
+        position = {14, 2},
         direction = 0,
         carriages = 3,
     },

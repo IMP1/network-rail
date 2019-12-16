@@ -3,7 +3,7 @@ local world = {}
 world.world_string = [[
 
      r__________l            r_____________l
-    j____________l          /               \
+    r____________l          /               \
 ___<______________>________<_________________>_______r_______l
                                                     /         \
                                                    (           )
@@ -29,9 +29,9 @@ world.char_map = {
     -- ["\\"] = "NW_SE",
     ["["] = "SE_N",
     -- ["|"] = "N_S",
-    ["("] = "S_NE",
+    ["("] = "NE_S",
     -- ["/"] = "NE_SW",
-    ["r"] = "SW_E",
+    ["r"] = "E_SW",
 }
 
 world.switches = {
@@ -44,7 +44,6 @@ world.switches = {
     {x = 46, y = 4, options = {"NW_E", "W_E"}},
 
     {x = 54, y = 4, options = {"E_W", "E_SW"}},
-
 }
 
 world.signals = {

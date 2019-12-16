@@ -32,9 +32,9 @@ function train.new(options, world)
         shape     = self.engine_shape,
     }))
 
-    local track = world.trackAt(unpack(self.position))
-    local backwards = track.next(direction.inverse(self.direction))
-    local movement = direction.to_offset(backwards)
+    local track = world:trackAt(unpack(self.position))
+    local backwards = track:next(direction.inverse(self.direction))
+    local movement = { direction.to_offset(backwards) }
     local pos = { self.position[1] + movement[1], self.position[2] + movement[2] }
 
     for i = 1, carriage_count do
@@ -45,9 +45,9 @@ function train.new(options, world)
             shape     = self.carriage_shape,
         }))
         -- Work out position backwards along track
-        track = world.trackAt(unpack(pos))
-        backwards = track.next(backwards)
-        movement = direction.to_offset(backwards)
+        track = world:trackAt(unpack(pos))
+        backwards = track:next(backwards)
+        movement = { direction.to_offset(backwards) }
         pos = { pos[1] + movement[1], pos[2] + movement[2] }
     end
     self.head = self.sections[1]

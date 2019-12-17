@@ -1,3 +1,5 @@
+local pallete = require 'pallete_default'
+
 local direction = require 'direction'
 local track_directions = require 'track_directions'
 
@@ -15,6 +17,10 @@ function track.new(options)
 end
 
 function track:next(dir)
+    print("track:")
+    print(self.orientation)
+    print(dir)
+    print(track_directions[self.orientation][dir])
     return track_directions[self.orientation][dir]
 end
 
@@ -28,10 +34,12 @@ function track:draw(tile_size, colour)
     end
     table.insert(points, 3, 0)
     table.insert(points, 4, 0)
-    love.graphics.setColor(colour or {0, 0, 0})
+    love.graphics.setColor(colour or pallete.BLACK)
     love.graphics.push()
     love.graphics.translate(x * tile_size, y * tile_size)
     love.graphics.line(points)
+    -- love.graphics.translate(0, -16)
+    -- love.graphics.print(self.orientation)
     love.graphics.pop()
 end
 

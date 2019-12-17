@@ -1,3 +1,4 @@
+local pallete = require 'pallete_default'
 local track = require 'track'
 local switch = require 'switch'
 local signal = require 'signal'
@@ -111,11 +112,14 @@ function world:draw(selected_object)
     local all_objects = self:allSelectableObjects()
     for _, obj in pairs(all_objects) do
         if obj == selected_object then
-            love.graphics.setColor(1, 1, 0, 1)
+            love.graphics.setColor(pallete.SELECTION)
         else
-            love.graphics.setColor(0, 0, 1, 0.5)
+            love.graphics.setColor(pallete.SELECTABLE)
         end
         love.graphics.circle("line", obj.position[1] * world.TILE_SIZE, obj.position[2] * world.TILE_SIZE, world.TILE_SIZE)
+        if obj.draw then
+            obj:draw(world.TILE_SIZE)
+        end
     end
     love.graphics.pop()
 end

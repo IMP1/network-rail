@@ -1,7 +1,8 @@
-local train  = require 'train'
-local world  = require 'world'
-local clock  = require 'clock'
-local camera = require 'camera'
+local pallete = require 'pallete_default'
+local train   = require 'train'
+local world   = require 'world'
+local clock   = require 'clock'
+local camera  = require 'camera'
 
 local scene_base = require 'scene_base'
 local scene = {}
@@ -164,7 +165,7 @@ function scene:draw()
         train:draw(world.TILE_SIZE)
     end
     self.camera:unset()
-    love.graphics.setColor(0, 0, 0)
+    love.graphics.setColor(pallete.BLACK)
     love.graphics.print(tostring(self.clock), 0, 0)
     if self.selection and self.selection.drawInfo then
         love.graphics.push()

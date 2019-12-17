@@ -1,3 +1,5 @@
+local pallete = require 'pallete_default'
+
 local station = {}
 station.__index = station
 
@@ -26,7 +28,7 @@ function station.new(options)
 end
 
 function station:drawInfo()
-    love.graphics.setColor(0, 0, 0)
+    love.graphics.setColor(pallete.BLACK)
     love.graphics.print("Station: " .. self.name, 0, 0)
 end
 

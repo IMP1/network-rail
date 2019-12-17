@@ -1,3 +1,5 @@
+local pallete = require 'pallete_default'
+
 local carriage = {}
 carriage.__index = carriage
 
@@ -29,6 +31,7 @@ function carriage:draw(tile_size)
     local x, y = unpack(self.position)
     local w, h = self.length, self.width
     local r = self.direction
+    love.graphics.setColor(pallete.BLACK)
     love.graphics.circle("fill", x * tile_size, y * tile_size, 3)
 end
 

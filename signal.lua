@@ -1,3 +1,5 @@
+local pallete = require 'pallete_default'
+
 local signal = {}
 signal.__index = signal
 
@@ -26,18 +28,32 @@ function signal:toggle()
     self.allow_passage = not self.allow_passage
     if self.allow_passage then
         for _, t in pairs(self.waiting_trains) do
-            t.notify()
+            t:notify(self)
         end
         self.waiting_trains = {}
     end
 end
 
 function signal:drawInfo()
-    love.graphics.setColor(0, 0, 0)
+    love.graphics.setColor(pallete.BLACK)
     love.graphics.print("Signal", 0, 0)
     local state = "red"
     if self.allow_passage then state = "green" end
     love.graphics.print("Current state is " .. state, 0, 16)
+end
+
+function signal:draw(tile_size)
+    local x, y = unpack(self.track.position)
+    love.graphics.setColor(pallete.BLACK)
+    love.graphics.circle("line", x * tile_size, y * tile_size + 4, 4)
+    love.graphics.circle("line", x * tile_size, y * tile_size - 4, 4)
+    if self.allow_passage then
+        love.graphics.setColor(pallete.GO)
+        love.graphics.circle("fill", x * tile_size, y * tile_size - 4, 4)
+    else
+        love.graphics.setColor(pallete.STOP)
+        love.graphics.circle("fill", x * tile_size, y * tile_size + 4, 4)
+    end
 end
 
 return signal

@@ -1,3 +1,5 @@
+local pallete = require 'pallete_default'
+
 local switch = {}
 switch.__index = switch
 
@@ -23,7 +25,7 @@ function switch:toggle()
 end
 
 function switch:drawInfo()
-    love.graphics.setColor(0, 0, 0)
+    love.graphics.setColor(pallete.BLACK)
     love.graphics.print("Switch", 0, 0)
     local state = "State " .. self.current .. " of " .. #self.options
     love.graphics.print(state, 0, 16)

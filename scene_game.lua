@@ -127,6 +127,12 @@ function scene:keyPressed(key)
         self.selection = nil
         self.selection_index = nil
     end
+    if key == "p" then
+        self.paused = not self.paused
+    end
+    if key == "`" then
+        self.game_speed = 0.3
+    end
 end
 
 function scene:update(dt)
@@ -134,10 +140,10 @@ function scene:update(dt)
     local gdt = dt * self.game_speed
     self.clock:update(gdt)
     for _, t in pairs(self.trains) do
-        t:update(gdt)
+        t:update(gdt, self.world)
     end
     for _, s in pairs(self.schedules) do
-        s:update(gdt)
+        s:update(gdt, self.world)
     end
 
     -- camera movement

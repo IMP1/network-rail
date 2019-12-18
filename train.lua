@@ -7,6 +7,26 @@ local route = require 'route'
 local train = {}
 train.__index = train
 
+local function floor(x, y, forwards)
+    local ox, oy = direction.to_offset(forwards)
+    local new_x, new_y
+    if ox < 0 then
+        new_x = math.ceil(x)
+    elseif ox > 0 then
+        new_x = math.floor(x)
+    else
+        new_x = x
+    end
+    if oy < 0 then
+        new_y = math.ceil(y)
+    elseif oy > 0 then
+        new_y = math.floor(y)
+    else
+        new_y = y
+    end
+    return new_x, new_y
+end
+
 function train.new(options, world)
     local self = {}
     setmetatable(self, train)
@@ -19,10 +39,10 @@ function train.new(options, world)
     local engine_width    = options.engine_width    or 3  -- metres
     local engine_shape    = options.engine_shape    or carriage.shapes.BULLET
 
-    self.route           = options.route           or route.new()
-    self.position        = options.position        or {0, 0} -- metres
-    self.direction       = options.direction       or 0  -- radians
-    self.speed           = options.speed           or 2  -- cells per second
+    self.route            = options.route           or route.new()
+    self.position         = options.position        or {0, 0} -- metres
+    self.direction        = options.direction       or 0  -- radians
+    self.speed            = options.speed           or 2  -- cells per second
 
     self.sections = {}
     table.insert(self.sections, carriage.new({
@@ -73,11 +93,6 @@ function train:next_track(world)
     local forwards = track:next(self.direction)
     local movement = { direction.to_offset(forwards) }
     local pos = { self.position[1] + movement[1], self.position[2] + movement[2] }
-    print("train")
-    print(forwards)
-    print(unpack(self.position))
-    print(unpack(movement))
-    print(world:trackAt(unpack(pos)))
     return world:trackAt(pos[1], pos[2])
 end
 
@@ -98,7 +113,7 @@ function train:update(dt, world)
         -- Update sections' position and direction
         for _, section in pairs(self.sections) do
             local x, y = unpack(section.position)
-            local i, j = math.floor(x), math.floor(y)
+            local i, j = floor(x, y, section.direction)
             local track = world:trackAt(i, j)
             local forwards = track:next(section.direction)
             local dx, dy = direction.to_offset(forwards)
@@ -124,15 +139,8 @@ function train:update(dt, world)
     -- Update partial position along track for each section
     for _, section in pairs(self.sections) do
         local x, y = unpack(section.position)
-        local i, j = math.floor(x), math.floor(y)
+        local i, j = floor(x, y, section.direction)
         local track = world:trackAt(i, j)
-        print("carriage")
-        print(x, y)
-        print(i, j)
-        print(track)
-        -- TODO: The bug here (I think) is that the current position is always being floored.
-        --       But when the train is going up or left, then it should be ceil-ed, because
-        --       it should be rounded to what it was previously, rather than always floored.
         local forwards = track:next(section.direction)
         local dx, dy = direction.to_offset(forwards)
         section.position = {i + dx * self.track_progress, j + dy * self.track_progress}
@@ -144,10 +152,10 @@ function train:draw(tile_size)
     for _, section in pairs(self.sections) do
         section:draw(tile_size)
     end
-    do
+    do -- debug
         local head = self.sections[1]
         local x, y = unpack(head.position)
-        local i, j = math.floor(x), math.floor(y)
+        local i, j = floor(x, y, head.direction)
         love.graphics.setColor(pallete.BLACK)
         love.graphics.circle("line", i * tile_size, j * tile_size, 4)
         local next_track = self:next_track(scene_manager.scene().world)

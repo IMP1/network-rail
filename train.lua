@@ -143,7 +143,7 @@ function train:update(dt, world)
         local track = world:trackAt(i, j)
         local forwards = track:next(section.direction)
         local dx, dy = direction.to_offset(forwards)
-        section.position = {i + dx * self.track_progress, j + dy * self.track_progress}
+        section.position = { i + dx * self.track_progress, j + dy * self.track_progress }
     end
 end
 
@@ -159,7 +159,7 @@ function train:draw(tile_size)
         love.graphics.setColor(pallete.BLACK)
         love.graphics.circle("line", i * tile_size, j * tile_size, 4)
         local next_track = self:next_track(scene_manager.scene().world)
-        local i, j = unpack(next_track.position)
+        i, j = unpack(next_track.position)
         love.graphics.setColor(pallete.GO)
         love.graphics.circle("line", i * tile_size, j * tile_size, 12)
     end

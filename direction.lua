@@ -25,6 +25,8 @@ function direction.to_offset(dir)
         return 0, -1
     elseif dir == 7 then
         return 1, -1
+    else
+        error("invalid direction '" .. dir .. "'")
     end
 end
 

@@ -29,6 +29,8 @@ function switch:drawInfo()
     love.graphics.print("Switch", 0, 0)
     local state = "State " .. self.current .. " of " .. #self.options
     love.graphics.print(state, 0, 16)
+    local current = self.options[self.current]
+    love.graphics.print(current, 0, 32)
 end
 
 return switch

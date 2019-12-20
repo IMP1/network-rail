@@ -17,10 +17,6 @@ function track.new(options)
 end
 
 function track:next(dir)
-    print("track:")
-    print(self.orientation)
-    print(dir)
-    print(track_directions[self.orientation][dir])
     return track_directions[self.orientation][dir]
 end
 

@@ -12,17 +12,13 @@ local function floor(x, y, forwards)
     local new_x, new_y
     if ox < 0 then
         new_x = math.ceil(x)
-    elseif ox > 0 then
-        new_x = math.floor(x)
     else
-        new_x = x
+        new_x = math.floor(x)
     end
     if oy < 0 then
         new_y = math.ceil(y)
-    elseif oy > 0 then
-        new_y = math.floor(y)
     else
-        new_y = y
+        new_y = math.floor(y)
     end
     return new_x, new_y
 end
@@ -123,8 +119,8 @@ function train:update(dt, world)
         -- Update train's position and direction
         local track = world:trackAt(unpack(self.position))
         local forwards = track:next(self.direction)
-        local movement = { direction.to_offset(forwards) }
-        self.position = { self.position[1] + movement[1], self.position[2] + movement[2] }
+        local dx, dy = direction.to_offset(forwards)
+        self.position = { self.position[1] + dx, self.position[2] + dy }
         self.direction = forwards
         -- Wait if there's a signal ahead
         local next_track = self:next_track(world)
@@ -141,6 +137,7 @@ function train:update(dt, world)
         local x, y = unpack(section.position)
         local i, j = floor(x, y, section.direction)
         local track = world:trackAt(i, j)
+        if track == nil then error("attempt to index local 'track' at " .. i .. ", " .. j .. " (a nil value)") end
         local forwards = track:next(section.direction)
         local dx, dy = direction.to_offset(forwards)
         section.position = { i + dx * self.track_progress, j + dy * self.track_progress }
@@ -168,6 +165,13 @@ end
 function train:drawInfo()
     love.graphics.setColor(pallete.BLACK)
     love.graphics.print("Train", 0, 0)
+    local head = self.sections[1]
+    local x, y = unpack(head.position)
+    local i, j = floor(x, y, head.direction)
+    love.graphics.print(i .. ", " .. j, 0, 16)
+    local next_track = self:next_track(scene_manager.scene().world)
+    i, j = unpack(next_track.position)
+    love.graphics.print("->" .. i .. ", " .. j, 0, 32)
 end
 
 return train

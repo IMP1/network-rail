@@ -164,12 +164,18 @@ function scene:update(dt)
 end
 
 function scene:draw()
+    local mx, my = love.mouse.getPosition()
+    local wx, wy = self.camera:toWorldPosition(mx, my)
+    wx, wy = math.ceil(wx / world.TILE_SIZE), math.ceil(wy / world.TILE_SIZE)
+
     love.graphics.setColor(1, 1, 1)
     self.camera:set()
     self.world:draw(self.selection)
     for _, train in pairs(self.trains) do
         train:draw(world.TILE_SIZE)
     end
+    love.graphics.setColor(pallete.SELECTION)
+    love.graphics.rectangle("line", (wx - 0.5) * world.TILE_SIZE, (wy - 0.5) * world.TILE_SIZE, world.TILE_SIZE, world.TILE_SIZE)
     self.camera:unset()
     love.graphics.setColor(pallete.BLACK)
     love.graphics.print(tostring(self.clock), 0, 0)
@@ -179,6 +185,7 @@ function scene:draw()
         self.selection:drawInfo()
         love.graphics.pop()
     end
+    love.graphics.print(wx .. ", " .. wy, 0, 16)
 end
 
 return scene

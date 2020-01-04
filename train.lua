@@ -70,6 +70,9 @@ end
 function train:next_track(world)
     local track = world:trackAt(unpack(self.track_position))
     local forwards = track:next(self.direction)
+    if forwards == nil then
+        -- TODO: crash the train!
+    end
     local movement = { direction.to_offset(forwards) }
     local pos = { self.track_position[1] + movement[1], self.track_position[2] + movement[2] }
     return world:trackAt(pos[1], pos[2])
@@ -105,10 +108,6 @@ function train:move_to_next_track(world)
     self.direction = forwards
     -- Wait if there's a signal ahead
     local next_track = self:next_track(world)
-    print(x, y, track.orientation)
-    print("-->", dx, dy)
-    print(self.track_position[1], self.track_position[2], world:trackAt(self.track_position[1], self.track_position[2]).orientation)
-    print("")
     for _, signal in pairs(world.signals) do
         if signal.track == next_track and not signal.allow_passage then
             signal:wait(self)

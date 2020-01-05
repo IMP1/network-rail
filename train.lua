@@ -71,6 +71,7 @@ function train:next_track(world)
     local track = world:trackAt(unpack(self.track_position))
     local forwards = track:next(self.direction)
     if forwards == nil then
+        error("The train crashed")
         -- TODO: crash the train!
     end
     local movement = { direction.to_offset(forwards) }
@@ -166,7 +167,7 @@ function train:drawInfo()
     love.graphics.print("Train", 0, 0)
     local head = self.sections[1]
     local x, y = unpack(head.position)
-    local i, j = head.track_position
+    local i, j = unpack(head.track_position)
     love.graphics.print(i .. ", " .. j, 0, 16)
     local next_track = self:next_track(scene_manager.scene().world)
     i, j = unpack(next_track.position)

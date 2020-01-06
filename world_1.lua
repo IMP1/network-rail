@@ -62,6 +62,7 @@ world.signals = {
 world.stations = {
     {
         name = "Leeds",
+        code = "LDS",
         platforms = {
             { 
                 name = "1", 
@@ -75,6 +76,7 @@ world.stations = {
     },
     {
         name = "Shipley", 
+        code = "SHP",
         platforms = {
             { 
                 name = "1", 

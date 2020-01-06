@@ -8,6 +8,7 @@ function station.new(options)
     setmetatable(self, station)
 
     self.name      = options.name
+    self.code      = options.code
     self.platforms = options.platforms or {}
 
     self.position = { nil, nil }

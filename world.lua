@@ -86,6 +86,15 @@ function world:trackAt(x, y)
     return self.world_cells[y][x]
 end
 
+function world:stationWithCode(code)
+    for _, s in pairs(self.stations) do
+        if s.code == code then 
+            return s
+        end
+    end
+    return nil
+end
+
 function world:allSelectableObjects()
     local objects = {}
     for _, switch in pairs(self.switches) do

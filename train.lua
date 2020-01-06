@@ -19,7 +19,7 @@ function train.new(options, world)
     local engine_width    = options.engine_width    or 3  -- metres
     local engine_shape    = options.engine_shape    or carriage.shapes.BULLET
 
-    self.route            = options.route           or route.new()
+    self.route            = route.new(options.route or {})
     self.track_position   = options.position        or {0, 0} -- coordinates
     self.position         = self.track_position
     self.direction        = options.direction       or 0  -- radians

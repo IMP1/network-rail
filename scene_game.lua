@@ -27,6 +27,13 @@ function scene.new(level)
     
     self.trains = {}
     for _, t in pairs(level.trains) do
+        for _, stop in pairs(t.route) do
+            local station = self.world:stationWithCode(stop.station)
+            if station == nil then
+                error("Could not find station with the code '" .. stop.station .. "'")
+            end
+            stop.station = station
+        end
         table.insert(self.trains, train.new(t, self.world))
     end
 

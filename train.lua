@@ -149,7 +149,8 @@ function train:draw(tile_size)
     for _, section in pairs(self.sections) do
         section:draw(tile_size)
     end
-    do -- debug
+    ---[[ -- DEBUG INFO
+    do 
         local head = self.sections[1]
         local x, y = unpack(head.position)
         local i, j = unpack(head.track_position)
@@ -160,18 +161,39 @@ function train:draw(tile_size)
         love.graphics.setColor(pallete.GO)
         love.graphics.circle("line", i * tile_size, j * tile_size, 12)
     end
+    --]]
 end
 
 function train:drawInfo()
     love.graphics.setColor(pallete.BLACK)
     love.graphics.print("Train", 0, 0)
-    local head = self.sections[1]
-    local x, y = unpack(head.position)
-    local i, j = unpack(head.track_position)
-    love.graphics.print(i .. ", " .. j, 0, 16)
-    local next_track = self:next_track(scene_manager.scene().world)
-    i, j = unpack(next_track.position)
-    love.graphics.print("->" .. i .. ", " .. j, 0, 32)
+    ---[[ --DEBUG INFO
+    do
+        local head = self.sections[1]
+        local x, y = unpack(head.position)
+        local i, j = unpack(head.track_position)
+        love.graphics.print(i .. ", " .. j, 0, 16)
+        local next_track = self:next_track(scene_manager.scene().world)
+        i, j = unpack(next_track.position)
+        love.graphics.print("->" .. i .. ", " .. j, 0, 32)
+    end
+    --]]
+    love.graphics.print("Route: ", 0, 16)
+    for j, stop in ipairs(self.route.stops) do
+        if j <= self.current_position then
+            local x, y = 8, j * 16 + 16
+            if stop.arrival_time == nil then
+                love.graphics.setColor(pallete.MISSED)
+            elseif stop.arrival_time > stop.time then
+                love.graphics.setColor(pallete.LATE)
+            else
+                love.graphics.setColor(pallete.ON_TIME)
+            end
+        else
+            love.graphics.setColor(pallete.BLACK)
+        end
+        love.graphics.print(stop.station.name, x, y)
+    end
 end
 
 return train

@@ -8,7 +8,7 @@ function time.parse(text)
         hour, minute = text:match("(%d%d):(%d%d)")
         second = 0
     end
-    return time.new(hour, minute, second)
+    return time.new(tonumber(hour), tonumber(minute), tonumber(second))
 end
 
 function time.new(hour, minute, second)

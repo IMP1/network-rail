@@ -167,7 +167,7 @@ end
 function train:drawInfo()
     love.graphics.setColor(pallete.BLACK)
     love.graphics.print("Train", 0, 0)
-    ---[[ --DEBUG INFO
+    --[[ --DEBUG INFO
     do
         local head = self.sections[1]
         local x, y = unpack(head.position)
@@ -180,19 +180,24 @@ function train:drawInfo()
     --]]
     love.graphics.print("Route: ", 0, 16)
     for j, stop in ipairs(self.route.stops) do
-        if j <= self.current_position then
-            local x, y = 8, j * 16 + 16
+        local x, y = 8, j * 16 + 16
+        love.graphics.setColor(pallete.BLACK)
+        if j <= self.route.current_position then
             if stop.arrival_time == nil then
-                love.graphics.setColor(pallete.MISSED)
+                if j < self.route.current_position then
+                    love.graphics.setColor(pallete.MISSED)
+                end
             elseif stop.arrival_time > stop.time then
                 love.graphics.setColor(pallete.LATE)
             else
                 love.graphics.setColor(pallete.ON_TIME)
             end
-        else
-            love.graphics.setColor(pallete.BLACK)
         end
-        love.graphics.print(stop.station.name, x, y)
+        love.graphics.print(stop.station.name, x, y )
+        love.graphics.print(tostring(stop.time), x + 96, y)
+        if stop.arrival_time then
+            love.graphics.print(tostring(stop.arrival_time), x + 128, y)
+        end
     end
 end
 

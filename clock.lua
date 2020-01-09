@@ -14,7 +14,7 @@ end
 
 function clock:update(dt)
     local days_on
-    self.time, days_on = self.time.advance("second", dt)
+    self.time, days_on = self.time:advance("second", dt)
     if days_on > 0 then
         -- TODO: new day!
     end

@@ -14,14 +14,16 @@ level.trains = {
         route     = {
             {
                 station = "LDS",
-                time    = "00:00",
+                time    = "07:00",
             },
             {
                 station = "SHP",
-                time    = "01:00",
+                time    = "08:00",
             },
         },
     },
 }
+
+level.start_time = "00:00"
 
 return level

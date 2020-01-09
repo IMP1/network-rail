@@ -3,6 +3,7 @@ local train   = require 'train'
 local world   = require 'world'
 local clock   = require 'clock'
 local camera  = require 'camera'
+local time    = require 'time'
 
 local scene_base = require 'scene_base'
 local scene = {}
@@ -59,7 +60,7 @@ function scene.new(level)
 
     self.game_speed = 1
     self.paused = false
-    self.clock = clock.new({})
+    self.clock = clock.new({ time = time.parse(level.start_time) })
     self.control_groups = {}
     self.schedules = {}
     self.camera = camera.new()

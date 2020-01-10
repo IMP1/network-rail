@@ -22,6 +22,7 @@ function route:step()
 end
 
 function route:arriveAt(station, time)
+    print("Arriving at " .. station.name .. " at " .. tostring(time))
     if self:nextStation() == station then
         self:nextStop().arrival_time = time
     else

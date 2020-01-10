@@ -147,6 +147,7 @@ function scene:update(dt)
     if self.paused then return end
     local gdt = dt * self.game_speed
     self.clock:update(gdt)
+    self.world.current_time = self.clock:currentTime()
     for _, t in pairs(self.trains) do
         t:update(gdt, self.world)
     end

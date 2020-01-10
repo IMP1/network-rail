@@ -114,6 +114,10 @@ function train:move_to_next_track(world)
             signal:wait(self)
             self.waiting = true
             self.moving = false
+            local station = world:stationFromSignal(signal)
+            if station then
+                self.route:arriveAt(station, world.current_time)
+            end
         end
     end
 end

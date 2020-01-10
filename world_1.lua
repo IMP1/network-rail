@@ -47,16 +47,16 @@ world.switches = {
 }
 
 world.signals = {
-    {x = 22, y = 4, start = true},
+    {x = 22, y = 4, start_green = true},
 
-    {x = 15, y = 2, start = false},
-    {x = 16, y = 3, start = false},
-    {x = 17, y = 4, start = true},
+    {x = 15, y = 2, start_green = false},
+    {x = 16, y = 3, start_green = false},
+    {x = 17, y = 4, start_green = true},
 
-    {x = 42, y = 2, start = false},
-    {x = 44, y = 4, start = true},
+    {x = 42, y = 2, start_green = false},
+    {x = 44, y = 4, start_green = true},
 
-    {x = 52, y = 6, start = false},
+    {x = 52, y = 6, start_green = false},
 }
 
 world.stations = {
@@ -67,10 +67,12 @@ world.stations = {
             { 
                 name = "1", 
                 tracks = { {8,2},{9,2},{10,2},{11,2},{12,2},{13,2} },
+                signal = 2,
             },
             { 
                 name = "2", 
                 tracks = { {7,3},{8,3},{9,3},{10,3},{11,3},{12,3},{13,3},{14,3} },
+                signal = 3,
             },
         }
     },
@@ -81,6 +83,7 @@ world.stations = {
             { 
                 name = "1", 
                 tracks = { {32,2},{33,2},{34,2},{35,2},{36,2},{37,2} },
+                signal = 5,
             },
         }
     },

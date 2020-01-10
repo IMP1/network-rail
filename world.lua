@@ -28,6 +28,7 @@ function world.new(options)
     local signals      = options.signals      or {}
     local stations     = options.stations     or {}
     local char_map     = options.char_map     or {}
+    local current_time = nil
 
     self.tracks = {}
     self.world_cells = {}
@@ -69,12 +70,16 @@ function world.new(options)
         local t = self.world_cells[s.y][s.x]
         local obj = signal.new({
             track = t,
+            start_green = s.start_green
         })
         table.insert(self.signals, obj)
     end
 
     self.stations = {}
     for _, s in pairs(stations) do
+        for _, p in pairs(s.platforms) do
+            p.signal = self.signals[p.signal]
+        end
         local obj = station.new(s)
         table.insert(self.stations, obj)
     end
@@ -90,6 +95,16 @@ function world:stationWithCode(code)
     for _, s in pairs(self.stations) do
         if s.code == code then 
             return s
+        end
+    end
+    return nil
+end
+
+function world:stationFromSignal(signal)
+    for _, station in pairs(self.stations) do
+        local platform = station:platformFromSignal(signal)
+        if platform then
+            return station
         end
     end
     return nil

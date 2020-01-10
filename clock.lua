@@ -20,6 +20,10 @@ function clock:update(dt)
     end
 end
 
+function clock:currentTime()
+    return self.time
+end
+
 function clock:__tostring(format)
     return tostring(self.time, format)
 end

@@ -28,6 +28,15 @@ function station.new(options)
     return self
 end
 
+function station:platformFromSignal(signal)
+    for i, platform in pairs(self.platforms) do
+        if platform.signal == signal then
+            return i
+        end
+    end
+    return nil
+end
+
 function station:drawInfo()
     love.graphics.setColor(pallete.BLACK)
     love.graphics.print("Station: " .. self.name, 0, 0)

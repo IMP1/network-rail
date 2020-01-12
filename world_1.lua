@@ -5,7 +5,7 @@ world.world_string = [[
      r__________l            r_____________l
     r____________l          /               \
 ___<______________>________<_________________>_______r_______l
-                                                    /         \
+                                                  \ /         \
                                                    (           )
                                                    |           |
                                                    [           ]
@@ -44,6 +44,8 @@ world.switches = {
     {x = 46, y = 4, options = {"NW_E", "W_E"}},
 
     {x = 54, y = 4, options = {"E_W", "E_SW"}},
+    {x = 50, y = 4, options = {"E_W", "SE_W"}},
+    {x = 52, y = 6, options = {"NE_S", "NW_S"}},
 }
 
 world.signals = {
@@ -56,7 +58,7 @@ world.signals = {
     {x = 42, y = 2, start_green = false},
     {x = 44, y = 4, start_green = true},
 
-    {x = 52, y = 6, start_green = false},
+    {x = 52, y = 7, start_green = false},
 }
 
 world.stations = {

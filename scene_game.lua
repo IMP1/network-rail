@@ -62,6 +62,7 @@ function scene.new(level)
     self.paused = false
     self.clock = clock.new({ time = time.parse(level.start_time) })
     self.control_groups = {}
+    self.control_group_keys = { "1", "2", "3", "4", "5" --[[, ... ]] }
     self.schedules = {}
     self.camera = camera.new()
 
@@ -119,13 +120,14 @@ function scene:keyPressed(key)
             self:getNextTabObject(self.selection_index)
         end
     end
-    if key == "1" or key == "2" or key == "3" or key == "4" --[[ ... ]] then
+    local control_index = table.index(self.control_group_keys, key)
+    if control_index then
         if love.keyboard.isDown("lctrl", "rctrl") then
             if self.selection then
-                self.control_groups[key] = self.selection
+                self.control_groups[control_index] = self.selection
             end
-        elseif self.control_groups[key] then
-            self.selection = self.control_groups[key]
+        elseif self.control_groups[control_index] then
+            self.selection = self.control_groups[control_index]
             self.selection_index = table.index(self.all_selectable_objects, self.selection)
         end
     end
@@ -189,6 +191,7 @@ function scene:draw()
     love.graphics.setColor(pallete.SELECTION)
     love.graphics.rectangle("line", (wx - 0.5) * world.TILE_SIZE, (wy - 0.5) * world.TILE_SIZE, world.TILE_SIZE, world.TILE_SIZE)
     self.camera:unset()
+
     love.graphics.setColor(pallete.BLACK)
     love.graphics.print(tostring(self.clock), 0, 0)
     if self.selection and self.selection.drawInfo then
@@ -198,6 +201,22 @@ function scene:draw()
         love.graphics.pop()
     end
     love.graphics.print(wx .. ", " .. wy, 0, 16)
+    
+    for i, key in ipairs(control_group_keys) do
+        local obj = control_groups[i]
+        love.graphics.setColor(pallete.WHITE)
+        love.graphics.rectangle("fill", i * 32, 32, 24, 24)
+        if obj then
+            love.graphics.setColor(pallete.BLACK)
+        else
+            love.graphics.setColor(pallete.DISABLED)
+        end
+        love.graphics.rectangle("line", i * 32, 32, 24, 24)
+        love.graphics.printf(key, i * 32, 32, 32, "center")
+    end
+    -- TODO: draw control groups
+
+
 end
 
 return scene

@@ -119,11 +119,14 @@ function scene:keyPressed(key)
             self:getNextTabObject(self.selection_index)
         end
     end
-    if key == "??" then
-        if love.keyboard.isDown("lctrl", "rctrl") and self.selection then
-            -- TODO: if key, then assign that control group
-        else
-            -- TODO: if key, then select that control group
+    if key == "1" or key == "2" or key == "3" or key == "4" --[[ ... ]] then
+        if love.keyboard.isDown("lctrl", "rctrl") then
+            if self.selection then
+                self.control_groups[key] = self.selection
+            end
+        elseif self.control_groups[key] then
+            self.selection = self.control_groups[key]
+            self.selection_index = table.index(self.all_selectable_objects, self.selection)
         end
     end
     if key == "space" and self.selection then

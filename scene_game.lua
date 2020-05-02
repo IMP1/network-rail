@@ -144,7 +144,11 @@ function scene:keyPressed(key)
         self.paused = not self.paused
     end
     if key == "`" then
-        self.game_speed = 0.3
+        if self.game_speed == 0.3 then
+            self.game_speed = 1
+        else
+            self.game_speed = 0.3
+        end
     end
 end
 
@@ -202,8 +206,8 @@ function scene:draw()
     end
     love.graphics.print(wx .. ", " .. wy, 0, 16)
     
-    for i, key in ipairs(control_group_keys) do
-        local obj = control_groups[i]
+    for i, key in ipairs(self.control_group_keys) do
+        local obj = self.control_groups[i]
         love.graphics.setColor(pallete.WHITE)
         love.graphics.rectangle("fill", i * 32, 32, 24, 24)
         if obj then

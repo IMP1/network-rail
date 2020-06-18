@@ -30,6 +30,10 @@ function direction.to_offset(dir)
     end
 end
 
+function direction.to_radians(dir)
+    return math.pi * dir / 4
+end
+
 function direction.inverse(dir)
     return (dir + 4) % 8
 end

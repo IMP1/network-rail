@@ -28,12 +28,12 @@ function carriage:move(distance, direction, world)
     
 end
 
-function carriage:draw(tile_size)
+function carriage:draw(tile_size, size)
     local x, y = unpack(self.position)
     local w, h = self.length, self.width
     local r = self.direction
     love.graphics.setColor(pallete.BLACK)
-    love.graphics.circle("fill", x * tile_size, y * tile_size, 3)
+    love.graphics.circle("fill", x * tile_size, y * tile_size, size or 3)
 end
 
 return carriage

@@ -71,8 +71,9 @@ function train:next_track(world)
     local track = world:trackAt(unpack(self.track_position))
     local forwards = track:next(self.direction)
     if forwards == nil then
-        error("The train crashed")
-        -- TODO: crash the train!
+        scene_manager.scene():crashTrain(self)
+        self.crashed = true
+        return
     end
     local movement = { direction.to_offset(forwards) }
     local pos = { self.track_position[1] + movement[1], self.track_position[2] + movement[2] }
@@ -128,6 +129,9 @@ function train:update(dt, world)
     if self.track_progress >= 1 then
         self.track_progress = self.track_progress - 1
         self:move_to_next_track(world)
+    end
+    if self.crashed then
+        return
     end
     -- Update partial position along track for each section
     for section_index, section in ipairs(self.sections) do

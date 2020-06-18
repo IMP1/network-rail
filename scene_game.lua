@@ -69,6 +69,21 @@ function scene.new(level)
     return self
 end
 
+function scene:crashTrain(train)
+    local index = 0
+    for i, t in ipairs(self.trains) do
+        if t == train then
+            index = i
+        end
+    end
+    if index > 0 then
+        table.remove(self.trains, index)
+    end
+    -- TODO: show a crash.
+    -- TODO: impact score, or game over, or something
+    -- TODO: remove the train
+end
+
 function scene:objectNearestPoint(x, y, threshold)
     local nearest_object = nil
     local nearest_distance = nil

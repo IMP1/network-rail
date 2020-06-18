@@ -42,7 +42,7 @@ function signal:drawInfo()
     love.graphics.print("Current state is " .. state, 0, 16)
 end
 
-function signal:draw(tile_size)
+function signal:drawSignal(tile_size)
     local x, y = unpack(self.track.position)
     love.graphics.setColor(pallete.BLACK)
     love.graphics.circle("line", x * tile_size, y * tile_size + 4, 4)
@@ -54,6 +54,16 @@ function signal:draw(tile_size)
         love.graphics.setColor(pallete.STOP)
         love.graphics.circle("fill", x * tile_size, y * tile_size + 4, 4)
     end
+end
+
+function signal:draw(tile_size)
+    self:drawSignal(tile_size)
+end
+
+function signal:drawSelected(tile_size)
+    self:drawSignal(tile_size)
+    love.graphics.setColor(pallete.BLACK)
+    love.graphics.circle("line", self.position[1] * tile_size, self.position[2] * tile_size, tile_size)
 end
 
 return signal

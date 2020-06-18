@@ -152,24 +152,32 @@ function train:update(dt, world)
     end
 end
 
-function train:draw(tile_size)
+function train:drawTrain(tile_size)
     love.graphics.setColor(0, 0, 0)
     for _, section in pairs(self.sections) do
         section:draw(tile_size)
     end
-    ---[[ -- DEBUG INFO
-    do 
-        local head = self.sections[1]
-        local x, y = unpack(head.position)
-        local i, j = unpack(head.track_position)
-        love.graphics.setColor(pallete.BLACK)
-        love.graphics.circle("line", i * tile_size, j * tile_size, 4)
-        local next_track = self:next_track(scene_manager.scene().world)
-        i, j = unpack(next_track.position)
-        love.graphics.setColor(pallete.GO)
-        love.graphics.circle("line", i * tile_size, j * tile_size, 12)
+    self.sections[1]:draw(tile_size, 4)
+end
+
+function train:draw(tile_size)
+    self:drawTrain(tile_size)
+end
+
+function train:drawSelected(tile_size)
+    self:drawTrain(tile_size)
+    do
+        local angle = direction.to_radians(self.sections[1].direction)
+        local x, y = unpack(self.sections[1].position)
+        local r1, r2 = angle - math.pi / 2, angle + math.pi / 2
+        love.graphics.arc("line", "open", x * tile_size, y * tile_size, tile_size / 2, r1, r2)
     end
-    --]]
+    do
+        local angle = direction.to_radians(direction.inverse(self.sections[#self.sections].direction))
+        local x, y = unpack(self.sections[#self.sections].position)
+        local r1, r2 = angle - math.pi / 2, angle + math.pi / 2
+        love.graphics.arc("line", "open", x * tile_size, y * tile_size, tile_size / 2, r1, r2)
+    end
 end
 
 function train:drawInfo()

@@ -81,7 +81,6 @@ function scene:crashTrain(train)
     end
     -- TODO: show a crash.
     -- TODO: impact score, or game over, or something
-    -- TODO: remove the train
 end
 
 function scene:objectNearestPoint(x, y, threshold)
@@ -205,7 +204,11 @@ function scene:draw()
     self.camera:set()
     self.world:draw(self.selection)
     for _, train in pairs(self.trains) do
-        train:draw(world.TILE_SIZE)
+        if train == self.selection then
+            train:drawSelected(world.TILE_SIZE)
+        else
+            train:draw(world.TILE_SIZE)
+        end
     end
     love.graphics.setColor(pallete.SELECTION)
     love.graphics.rectangle("line", (wx - 0.5) * world.TILE_SIZE, (wy - 0.5) * world.TILE_SIZE, world.TILE_SIZE, world.TILE_SIZE)

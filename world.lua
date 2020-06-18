@@ -140,8 +140,10 @@ function world:draw(selected_object)
         else
             love.graphics.setColor(pallete.SELECTABLE)
         end
-        love.graphics.circle("line", obj.position[1] * world.TILE_SIZE, obj.position[2] * world.TILE_SIZE, world.TILE_SIZE)
-        if obj.draw then
+        -- love.graphics.circle("line", obj.position[1] * world.TILE_SIZE, obj.position[2] * world.TILE_SIZE, world.TILE_SIZE)
+        if obj == selected_object and obj.drawSelected then
+            obj:drawSelected(world.TILE_SIZE)
+        elseif obj.draw then
             obj:draw(world.TILE_SIZE)
         end
     end

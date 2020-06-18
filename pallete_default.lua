@@ -18,4 +18,14 @@ pallete.ON_TIME = pallete.BLACK
 pallete.CANCELLED = pallete.STOP
 pallete.DELAYED   = pallete.WARN
 
+pallete.PLATFORMS = {
+    -- TODO: Add other, less confusing, colours.
+    pallete.GO,
+    pallete.STOP,
+    pallete.WARN,
+    pallete.STOP,
+    pallete.WARN,
+    pallete.GO,
+}
+
 return pallete

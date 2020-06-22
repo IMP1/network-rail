@@ -196,9 +196,12 @@ function scene:update(dt)
 end
 
 function scene:draw()
+
+    love.graphics.setColor(0, 0, 0)
     local mx, my = love.mouse.getPosition()
     local wx, wy = self.camera:toWorldPosition(mx, my)
-    wx, wy = math.ceil(wx / world.TILE_SIZE), math.ceil(wy / world.TILE_SIZE)
+    local i, j = math.ceil(wx / world.TILE_SIZE - 0.5), math.ceil(wy / world.TILE_SIZE - 0.5)
+    i, j = (i - 0.5) * world.TILE_SIZE, (j - 0.5) * world.TILE_SIZE
 
     love.graphics.setColor(1, 1, 1)
     self.camera:set()
@@ -211,7 +214,7 @@ function scene:draw()
         end
     end
     love.graphics.setColor(pallete.SELECTION)
-    love.graphics.rectangle("line", (wx - 0.5) * world.TILE_SIZE, (wy - 0.5) * world.TILE_SIZE, world.TILE_SIZE, world.TILE_SIZE)
+    love.graphics.rectangle("line", i, j, world.TILE_SIZE, world.TILE_SIZE)
     self.camera:unset()
 
     love.graphics.setColor(pallete.BLACK)
@@ -222,19 +225,18 @@ function scene:draw()
         self.selection:drawInfo()
         love.graphics.pop()
     end
-    love.graphics.print(wx .. ", " .. wy, 0, 16)
     
     for i, key in ipairs(self.control_group_keys) do
         local obj = self.control_groups[i]
         love.graphics.setColor(pallete.WHITE)
-        love.graphics.rectangle("fill", i * 32, 32, 24, 24)
+        love.graphics.rectangle("fill", 128 + i * 32, 32, 24, 24)
         if obj then
             love.graphics.setColor(pallete.BLACK)
         else
             love.graphics.setColor(pallete.DISABLED)
         end
-        love.graphics.rectangle("line", i * 32, 32, 24, 24)
-        love.graphics.printf(key, i * 32, 32, 32, "center")
+        love.graphics.rectangle("line", 128 + i * 32, 32, 24, 24)
+        love.graphics.printf(key, 128 + i * 32, 32, 32, "center")
     end
     -- TODO: draw control groups
 

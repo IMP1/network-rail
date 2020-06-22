@@ -24,6 +24,28 @@ function switch:toggle()
     self.track.orientation = self.options[self.current]
 end
 
+function switch:drawAlternatives(tile_size)
+    local OPACITY = 0.2
+    local r, g, b = unpack(pallete.BLACK)
+    local colour = {r, g, b, OPACITY}
+    for _, option in pairs(self.options) do
+        self.track.orientation = option
+        self.track:draw(tile_size, colour)
+    end
+    self.track.orientation = self.options[self.current]
+end
+
+function switch:draw(tile_size)
+    self:drawAlternatives(tile_size)
+end
+
+
+function switch:drawSelected(tile_size)
+    self:drawAlternatives(tile_size)
+    love.graphics.setColor(pallete.BLACK)
+    love.graphics.rectangle("line", (self.position[1] - 0.5) * tile_size, (self.position[2] - 0.5) * tile_size, tile_size, tile_size)
+end
+
 function switch:drawInfo()
     love.graphics.setColor(pallete.BLACK)
     love.graphics.print("Switch", 0, 0)

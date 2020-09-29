@@ -38,9 +38,6 @@ function station.new(options)
     end
     self.size = { max_x - min_x + 2, max_y - min_y + 2}
 
-    print(self.name)
-    print(unpack(self.size))
-
     return self
 end
 
@@ -61,14 +58,17 @@ function station:drawBounds(width, colour)
     -- love.graphics.rectangle("line", (x - w/2) * 24, y * 24, w * 24, h * 24)
     love.graphics.line((x - w/2) * 24, y * 24, (x - w/2) * 24, (y + h) * 24, (x + w/2) * 24, (y + h) * 24, (x + w/2) * 24, y * 24)
     local width = love.graphics.getFont():getWidth(self.name)
-    love.graphics.printf(self.name, (x - w/2) * 24, y * 24 - 8, w * 24, "center")
     love.graphics.line((x - w/2) * 24, y * 24, (x * 24) - width/2 - 4, y * 24)
     love.graphics.line((x * 24) + width/2 + 4, y * 24, (x + w/2) * 24, y * 24)
+    love.graphics.pushState("Color", colour or {0, 0, 0, 0.6})
+    love.graphics.printf(self.name, (x - w/2) * 24, y * 24 - 8, w * 24, "center")
+    love.graphics.popState("Color")
     love.graphics.popState("Color")
     love.graphics.popState("LineWidth")
 end
 
 function station:drawSelected()
+    -- TODO: Draw a stations signals associated with its platforms.
     self:drawBounds(2, {0, 0, 0})
     local world = scene_manager.scene().world
     love.graphics.pushState("LineWidth", 3)

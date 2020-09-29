@@ -35,13 +35,20 @@ function switch:drawAlternatives(tile_size)
     self.track.orientation = self.options[self.current]
 end
 
+function switch:drawSwitch(tile_size)
+    love.graphics.setColor(pallete.BLACK)   
+    love.graphics.circle("line", self.position[1] * tile_size, self.position[2] * tile_size, tile_size / 8)
+end
+
 function switch:draw(tile_size)
     self:drawAlternatives(tile_size)
+    self:drawSwitch(tile_size)
 end
 
 
 function switch:drawSelected(tile_size)
     self:drawAlternatives(tile_size)
+    self:drawSwitch(tile_size)
     love.graphics.setColor(pallete.BLACK)
     love.graphics.rectangle("line", (self.position[1] - 0.5) * tile_size, (self.position[2] - 0.5) * tile_size, tile_size, tile_size)
 end

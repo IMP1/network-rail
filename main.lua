@@ -27,6 +27,8 @@ local scene_manager = require 'scene_manager'
 
 local INITIAL_SCENE = require 'scene_game'
 
+-- TODO: Add trains entering and leaving the map
+-- TODO: Add an example map of multiple trains using the same line
 
 function love.load()
     love.graphics.setBackgroundColor(0.7,0.7,0.7)
